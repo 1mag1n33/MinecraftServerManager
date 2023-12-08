@@ -1,0 +1,97 @@
+:root{
+  --black: #000000;
+  --grey: #333333;
+  --light-grey: #CCCCCC;
+  --orange: #FFA500;
+  --dark-orange: #FF8C00;
+  --yellow: #FFFF00;
+  --dark-red: #8B0000;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--grey);
+    color: var(--light-grey);
+    margin: 0;
+    padding: 0;
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #555;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.navbar .user-menu {
+    float: right;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .user-menu span {
+    margin-right: 10px;
+    color: #fff;
+}
+
+.navbar a {
+    color: #fff;
+    margin-right: 20px;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    color: #ffa500;
+    text-decoration: underline;
+}
+
+.navbar .user-menu a{
+    color: #ffa500;
+    margin-right: 20px;
+    text-decoration: none;
+}
+
+.navbar .user-menu a:hover {
+    color: #ffd700;
+}
+
+.navbar a.login {
+    color: #ffa500;
+    text-decoration: none;
+}
+
+.navbar a.login:hover {
+    color: #ffd700;
+}
+
+.navbar a.register {
+    color: #ffa500;
+    text-decoration: none;
+}
+
+.navbar a.register:hover {
+    color: #ffd700;
+}
+
+
+button {
+    background-color: #FFA500; /* Orange */
+    color: #D3D3D3; /* Light Grey */
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #FF8C00; /* Dark Orange */
+}
+
+form {
+    margin-top: 20px;
+}
+
+footer {
+    margin-top: 50px;
+}

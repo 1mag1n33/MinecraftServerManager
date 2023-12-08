@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Server - Minecraft Server Manager{% endblock %}
+
+{% block content %}
+<h2 xmlns="http://www.w3.org/1999/html">Create Minecraft Server</h2>
+    <form method="post" action="{{ url_for('create_server') }}" id="createServerForm">
+        <label for="server-name">Server Name:</label>
+        <input id="server-name" name="server_name">
+
+        <br>
+
+        <label for="server-type">Server Type:</label>
+        <select id="server-type" name="server_type" onchange="updateVersions()">
+            <!-- Options will be populated dynamically with JavaScript -->
+        </select>
+
+        <br>
+
+        <label for="server-version">Server Version:</label>
+        <select id="server-version" name="server_version">
+            <!-- Options will be populated dynamically with JavaScript -->
+        </select>
+
+        <br>
+
+        <label for="download-path">Download Path:</label>
+        <input id="download-path" name="download_path">
+
+        <br>
+        <!-- Add more form fields as needed -->
+
+        <button type="submit">Create Server</button>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        // Fetch server types on page load
+        $(document).ready(function () {
+            updateServerTypes();
+        });
+
+        // Function to update server types dropdown
+        function updateServerTypes() {
+            $.ajax({
+                url: '/api/get_server_types',  // Update this URL with the route that returns server types
+                type: 'GET',
+                success: function (data) {
+                    var serverTypeDropdown = $('#server-type');
+                    serverTypeDropdown.empty();
+
+                    // Populate server types dropdown
+                    for (var i = 0; i < data.serverTypes.length; i++) {
+                        serverTypeDropdown.append($('<option>', {
+                            value: data.serverTypes[i],
+                            text: data.serverTypes[i]
+                        }));
+                    }
+
+                    // Update versions based on the selected server type
+                    updateVersions();
+                },
+                error: function (error) {
+                    console.error('Error fetching server types:', error);
+                }
+            });
+        }
+
+        // Function to update versions dropdown based on the selected server type
+        function updateVersions() {
+            var selectedServerType = $('#server-type').val();
+
+            $.ajax({
+                url: '/api/get_server_versions/' + selectedServerType,  // Update this URL with the route that returns versions
+                type: 'GET',
+                success: function (data) {
+                    var versionDropdown = $('#server-version');
+                    versionDropdown.empty();
+
+                    // Populate versions dropdown
+                    for (var i = 0; i < data.versions.length; i++) {
+                        versionDropdown.append($('<option>', {
+                            value: data.versions[i],
+                            text: data.versions[i]
+                        }));
+                    }
+                },
+                error: function (error) {
+                    console.error('Error fetching server versions:', error);
+                }
+            });
+        }
+    </script>
+
+{% endblock %}

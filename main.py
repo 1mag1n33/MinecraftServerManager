@@ -9,8 +9,6 @@ def run_script(script_name):
 
 
 if __name__ == "__main__":
-    paper = Paper("1.20.2", "./test")
-    paper.download_paper()
 
     run_script('./Cogs/Website/site.py')
 
