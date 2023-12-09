@@ -3,32 +3,36 @@
 {% block title %}Create Server - Minecraft Server Manager{% endblock %}
 
 {% block content %}
-<h2 xmlns="http://www.w3.org/1999/html">Create Minecraft Server</h2>
+    <h2>Create Minecraft Server</h2>
     <form method="post" action="{{ url_for('create_server') }}" id="createServerForm">
         <label for="server-name">Server Name:</label>
         <input id="server-name" name="server_name">
-
         <br>
 
         <label for="server-type">Server Type:</label>
         <select id="server-type" name="server_type" onchange="updateVersions()">
             <!-- Options will be populated dynamically with JavaScript -->
         </select>
-
         <br>
+
+        <!-- Add a new container for the release group select -->
+        <div id="release-group-container" style="display: none;">
+            <label for="release-group">Release Group:</label>
+            <select id="release-group" name="release_group">
+                <!-- Options will be populated dynamically with JavaScript -->
+            </select>
+            <br>
+        </div>
 
         <label for="server-version">Server Version:</label>
         <select id="server-version" name="server_version">
             <!-- Options will be populated dynamically with JavaScript -->
         </select>
-
         <br>
 
         <label for="download-path">Download Path:</label>
         <input id="download-path" name="download_path">
-
         <br>
-        <!-- Add more form fields as needed -->
 
         <button type="submit">Create Server</button>
     </form>
@@ -71,6 +75,34 @@
         function updateVersions() {
             var selectedServerType = $('#server-type').val();
 
+            // Show or hide the release group container based on the selected server type
+            var releaseGroupContainer = $('#release-group-container');
+            releaseGroupContainer.toggle(selectedServerType === 'vanilla');
+
+            // Fetch and populate release groups if the selected server type is 'vanilla'
+            if (selectedServerType === 'vanilla') {
+                $.ajax({
+                    url: '/api/get_release_groups',  // Update this URL with the route that returns release groups
+                    type: 'GET',
+                    success: function (data) {
+                        var releaseGroupDropdown = $('#release-group');
+                        releaseGroupDropdown.empty();
+
+                        // Populate release groups dropdown
+                        for (var i = 0; i < data.releaseGroups.length; i++) {
+                            releaseGroupDropdown.append($('<option>', {
+                                value: data.releaseGroups[i],
+                                text: data.releaseGroups[i]
+                            }));
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error fetching release groups:', error);
+                    }
+                });
+            }
+
+            // Fetch and populate versions based on the selected server type
             $.ajax({
                 url: '/api/get_server_versions/' + selectedServerType,  // Update this URL with the route that returns versions
                 type: 'GET',
