@@ -19,7 +19,7 @@ def create_server():
         download_path = request.form.get('download_path')
         release_group = request.form.get('release_group')
         # Vanilla
-        vanilla = Vanilla(server_name, selected_version, download_path, release_group)
+        vanilla = Vanilla(server_name, selected_version, download_path)
         vanilla.download_server()
 
         # Paper
@@ -55,6 +55,7 @@ def get_release_groups():
     release_groups = ['release', 'snapshot', 'beta', 'alpha']
     return jsonify({'releaseGroups': release_groups})
 
+
 @app.route('/api/get_versions/<release_group>')
 def get_vanilla_versions(release_group):
     print(release_group)
@@ -64,6 +65,7 @@ def get_vanilla_versions(release_group):
     # You can use the release_group parameter in your logic
 
     return {'versions': versions}
+
 
 if __name__ == '__main__':
     app.run(debug=True)

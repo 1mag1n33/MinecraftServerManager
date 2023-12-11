@@ -19,7 +19,7 @@
         <div id="release-group-container" style="display: none;">
             <label for="release-group">Release Group:</label>
             <select id="release-group" name="release_group" onchange="updateVanillaVersions()" required="True">
-                <!-- Options will be populated dynamically with JavaScript -->
+                <option value="release" selected>release</option>
             </select>
             <br>
         </div>
@@ -38,115 +38,6 @@
     </form>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-    <script>
-        // Fetch server types on page load
-        $(document).ready(function () {
-            updateServerTypes();
-        });
-
-        // Function to update server types dropdown
-        function updateServerTypes() {
-            $.ajax({
-                url: '/api/get_server_types',  // Update this URL with the route that returns server types
-                type: 'GET',
-                success: function (data) {
-                    var serverTypeDropdown = $('#server-type');
-                    serverTypeDropdown.empty();
-
-                    // Populate server types dropdown
-                    for (var i = 0; i < data.serverTypes.length; i++) {
-                        serverTypeDropdown.append($('<option>', {
-                            value: data.serverTypes[i],
-                            text: data.serverTypes[i]
-                        }));
-                    }
-
-                    // Update versions based on the selected server type
-                    updateVersions();
-                },
-                error: function (error) {
-                    console.error('Error fetching server types:', error);
-                }
-            });
-        }
-
-        // Function to update versions dropdown based on the selected server type
-        function updateVersions() {
-            var selectedServerType = $('#server-type').val();
-
-            // Show or hide the release group container based on the selected server type
-            var releaseGroupContainer = $('#release-group-container');
-            releaseGroupContainer.toggle(selectedServerType === 'vanilla');
-
-            // Fetch and populate release groups if the selected server type is 'vanilla'
-            if (selectedServerType === 'vanilla') {
-                $.ajax({
-                    url: '/api/get_release_groups',  // Update this URL with the route that returns release groups
-                    type: 'GET',
-                    success: function (data) {
-                        var releaseGroupDropdown = $('#release-group');
-                        releaseGroupDropdown.empty();
-
-                        // Populate release groups dropdown
-                        for (var i = 0; i < data.releaseGroups.length; i++) {
-                            releaseGroupDropdown.append($('<option>', {
-                                value: data.releaseGroups[i],
-                                text: data.releaseGroups[i]
-                            }));
-                        }
-                    },
-                    error: function (error) {
-                        console.error('Error fetching release groups:', error);
-                    }
-                });
-            }
-
-            // Fetch and populate versions based on the selected server type
-            $.ajax({
-                url: '/api/get_server_versions/' + selectedServerType,  // Update this URL with the route that returns versions
-                type: 'GET',
-                success: function (data) {
-                    var versionDropdown = $('#server-version');
-                    versionDropdown.empty();
-
-                    // Populate versions dropdown
-                    for (var i = 0; i < data.versions.length; i++) {
-                        versionDropdown.append($('<option>', {
-                            value: data.versions[i],
-                            text: data.versions[i]
-                        }));
-                    }
-                },
-                error: function (error) {
-                    console.error('Error fetching server versions:', error);
-                }
-            });
-        }
-
-        function updateVanillaVersions() {
-        var selectedReleaseGroup = $('#release-group').val();
-
-        $.ajax({
-            url: '/api/get_versions/' + selectedReleaseGroup,  // Update this URL with the route that returns versions for a release group
-            type: 'GET',
-            success: function (data) {
-                var versionDropdown = $('#server-version');
-                versionDropdown.empty();
-
-                // Populate versions dropdown
-                for (var i = 0; i < data.versions.length; i++) {
-                    versionDropdown.append($('<option>', {
-                        value: data.versions[i],
-                        text: data.versions[i]
-                    }));
-                }
-            },
-            error: function (error) {
-                console.error('Error fetching versions:', error);
-            }
-        });
-    }
-    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 {% endblock %}

@@ -72,7 +72,7 @@ class Vanilla:
     def __init__(self, server_name: str = None, version: str = None, download_path: str = None):
         self.version = version
         self.server_name = server_name
-        self.download_path = f"{download_path}\\{self.server_name}"
+        self.download_path = download_path
         self.vanilla_api_url = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
 
     def get_version_info(self, version_id):
