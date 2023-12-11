@@ -40,10 +40,7 @@ def get_server_types():
 def get_server_versions(server_type):
     p = Paper()
     s = Spigot()
-    v = Vanilla()
-    if server_type == 'vanilla':
-        versions = v.get_version_group()
-    elif server_type == 'spigot':
+    if server_type == 'spigot':
         versions = ['1.17', '1.16.4', '1.14.4']
     elif server_type == 'paper':
         versions = p.get_paper_versions()
@@ -55,8 +52,18 @@ def get_server_versions(server_type):
 
 @app.route('/api/get_release_groups')
 def get_release_groups():
-    release_groups = ['stable', 'snapshot', 'beta', 'alpha']
+    release_groups = ['release', 'snapshot', 'beta', 'alpha']
     return jsonify({'releaseGroups': release_groups})
+
+@app.route('/api/get_versions/<release_group>')
+def get_vanilla_versions(release_group):
+    print(release_group)
+    v = Vanilla()
+    versions = v.get_version_group(release_group)
+    # Logic to fetch and return versions based on the selected release group
+    # You can use the release_group parameter in your logic
+
+    return {'versions': versions}
 
 if __name__ == '__main__':
     app.run(debug=True)

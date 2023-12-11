@@ -69,10 +69,9 @@ class Paper:
 
 
 class Vanilla:
-    def __init__(self, server_name: str = None, version: str = None, download_path: str = None, group_name: str = None):
+    def __init__(self, server_name: str = None, version: str = None, download_path: str = None):
         self.version = version
         self.server_name = server_name
-        self.group_name = group_name
         self.download_path = f"{download_path}\\{self.server_name}"
         self.vanilla_api_url = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
 
@@ -94,16 +93,16 @@ class Vanilla:
             print(f"Error fetching version information for {version_id}: {e}")
             return None
 
-    def get_version_group(self):
+    def get_version_group(self, group_name):
         try:
             response = requests.get(self.vanilla_api_url)
             response.raise_for_status()
             data = response.json()
             group_versions = [entry['id'] for entry in data['versions'] if
-                              self.group_name and self.group_name.lower() in entry.get('type', '').lower()]
+                              group_name and group_name.lower() in entry.get('type', '').lower()]
             return group_versions
         except requests.RequestException as e:
-            print(f"Error fetching version group {self.group_name}: {e}")
+            print(f"Error fetching version group {group_name}: {e}")
             return None
 
     def get_version_url(self, version_id):

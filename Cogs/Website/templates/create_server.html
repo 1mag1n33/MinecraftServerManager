@@ -6,11 +6,11 @@
     <h2>Create Minecraft Server</h2>
     <form method="post" action="{{ url_for('create_server') }}" id="createServerForm">
         <label for="server-name">Server Name:</label>
-        <input id="server-name" name="server_name">
+        <input id="server-name" name="server_name" required="True">
         <br>
 
         <label for="server-type">Server Type:</label>
-        <select id="server-type" name="server_type" onchange="updateVersions()">
+        <select id="server-type" name="server_type" onchange="updateVersions()" required="True">
             <!-- Options will be populated dynamically with JavaScript -->
         </select>
         <br>
@@ -18,20 +18,20 @@
         <!-- Add a new container for the release group select -->
         <div id="release-group-container" style="display: none;">
             <label for="release-group">Release Group:</label>
-            <select id="release-group" name="release_group">
+            <select id="release-group" name="release_group" onchange="updateVanillaVersions()" required="True">
                 <!-- Options will be populated dynamically with JavaScript -->
             </select>
             <br>
         </div>
 
         <label for="server-version">Server Version:</label>
-        <select id="server-version" name="server_version">
+        <select id="server-version" name="server_version" required="True">
             <!-- Options will be populated dynamically with JavaScript -->
         </select>
         <br>
 
         <label for="download-path">Download Path:</label>
-        <input id="download-path" name="download_path">
+        <input id="download-path" name="download_path" required="True">
         <br>
 
         <button type="submit">Create Server</button>
@@ -123,6 +123,30 @@
                 }
             });
         }
+
+        function updateVanillaVersions() {
+        var selectedReleaseGroup = $('#release-group').val();
+
+        $.ajax({
+            url: '/api/get_versions/' + selectedReleaseGroup,  // Update this URL with the route that returns versions for a release group
+            type: 'GET',
+            success: function (data) {
+                var versionDropdown = $('#server-version');
+                versionDropdown.empty();
+
+                // Populate versions dropdown
+                for (var i = 0; i < data.versions.length; i++) {
+                    versionDropdown.append($('<option>', {
+                        value: data.versions[i],
+                        text: data.versions[i]
+                    }));
+                }
+            },
+            error: function (error) {
+                console.error('Error fetching versions:', error);
+            }
+        });
+    }
     </script>
 
 {% endblock %}
