@@ -14,8 +14,10 @@ class Socket:
         self.worldinfo = None
         self.diskspace = None
         self.playerinfo = None
+        self.client_socket = None
 
     def handle_client(self, client_socket):
+        self.client_socket = client_socket
         while True:
             # Receive and process statistics data
             data = client_socket.recv(1024).decode("utf-8")
@@ -40,11 +42,22 @@ class Socket:
 
                     print(self.getJavaRuntime())
 
-
                 except json.JSONDecodeError as e:
                     print("Error decoding JSON:", e)
 
         client_socket.close()
+
+    def send_msg(self, info_dict):
+        if self.client_socket:
+            try:
+                # Convert the dictionary to a JSON string
+                json_data = json.dumps(info_dict)
+
+                # Send the JSON data to the Java client
+                self.client_socket.send(json_data.encode("utf-8"))
+
+            except json.JSONEncodeError as e:
+                print(f"Error encoding JSON: {e}")
 
     def start_server(self):
         # Set up a server to receive statistics
