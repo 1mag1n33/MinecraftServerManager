@@ -1,10 +1,13 @@
 import json
 import socket
 import threading
+import uuid
 
 
 class Socket:
     def __init__(self):
+        self.server_id = str(uuid.uuid4())
+
         self.javaruntime = None
         self.sysinfo = None
         self.memory = None
@@ -28,6 +31,7 @@ class Socket:
                 try:
                     # Parse the JSON data
                     json_data = json.loads(data)
+                    print(json_data)
 
                     # Access individual values from the JSON data
                     self.javaruntime = json_data['JavaRuntime']
@@ -39,8 +43,6 @@ class Socket:
                     self.worldinfo = json_data['WorldInfo']
                     self.diskspace = json_data['DiskSpace']
                     self.playerinfo = json_data['PlayerStatistics']
-
-                    print(self.getJavaRuntime())
 
                 except json.JSONDecodeError as e:
                     print("Error decoding JSON:", e)
@@ -56,25 +58,28 @@ class Socket:
                 # Send the JSON data to the Java client
                 self.client_socket.send(json_data.encode("utf-8"))
 
-            except json.JSONEncodeError as e:
+            except json.JSONEncoder as e:
                 print(f"Error encoding JSON: {e}")
 
-    def start_server(self):
-        # Set up a server to receive statistics
+    def start_server(self, ip: str, port: int):
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_socket.bind(("0.0.0.0", 12345))
+        server_socket.bind((ip, port))
         server_socket.listen(5)  # Maximum 5 connections in the queue
+        self.send_msg(self.server_id)
 
-        print("Server listening on port 12345...")
+        print(f"Server listening on port {port}...")
 
         while True:
             # Wait for a connection
             client_socket, client_address = server_socket.accept()
             print("Accepted connection from:", client_address)
 
+
             # Start a new thread to handle the client
             client_handler = threading.Thread(target=self.handle_client, args=(client_socket,))
             client_handler.start()
+
+
 
     def getJavaRuntime(self):
         return self.javaruntime
@@ -106,4 +111,4 @@ class Socket:
 
 if __name__ == '__main__':
     S = Socket()
-    S.start_server()
+    S.start_server("0.0.0.0", 12345)
