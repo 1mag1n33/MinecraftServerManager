@@ -2,6 +2,7 @@ $(document).ready(function () {
             updateServerTypes();
             updateVersions();
             updateVanillaVersions();
+            updateLogo();
         });
 
         // Function to update server types dropdown
@@ -106,5 +107,31 @@ $(document).ready(function () {
                 error: function (error) {
                     console.error('Error fetching versions:', error);
                 }
-        });
-    }
+        })};
+        function updateLogo() {
+            var serverType = document.getElementById("server-type").value;
+            var logoElement = document.getElementById("server-logo");
+
+            // Update the image source based on the selected server type
+            switch (serverType) {
+                case "vanilla":
+                    logoElement.src = "/static/imgs/vanilla_logo.png"; // Replace with the actual path
+                    break;
+                case "spigot":
+                    logoElement.src = "/static/imgs/spigot_logo.png"; // Replace with the actual path
+                    break;
+                case "paper":
+                    logoElement.src = "/static/imgs/paper_logo.png"; // Replace with the actual path
+                    break;
+                default:
+                    logoElement.src = "/static/imgs/vanilla_logo.png"; // Set a default image or leave it empty
+                    break;
+            }
+        }
+
+// Call the function on page load and when the server type changes
+document.addEventListener("DOMContentLoaded", updateLogo);
+document.getElementById("server-type").addEventListener("change", updateLogo);
+
+
+    

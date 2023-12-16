@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from Cogs.utils import Paper, Vanilla, Spigot
+from Cogs.Utils.server_utils import Paper, Vanilla, Spigot
 
 app = Flask(__name__, static_folder="./static", template_folder="./templates")
 
@@ -12,19 +12,28 @@ def home():
 @app.route('/create', methods=['GET', 'POST'])
 def create_server():
     if request.method == 'POST':
-        # Handle form submission logic here
+
         server_name = request.form.get('server_name')
         server_type = request.form.get('server_type')
         selected_version = request.form.get('server_version')
         download_path = request.form.get('download_path')
         release_group = request.form.get('release_group')
-        # Vanilla
-        vanilla = Vanilla(server_name, selected_version, download_path)
-        vanilla.download_server()
 
-        # Paper
-        paper = Paper(server_name, selected_version, download_path)
-        paper.download_paper()
+        if server_type == 'vanilla':
+            vanilla = Vanilla(server_name, selected_version, download_path)
+            vanilla.download_vanilla()
+
+        elif server_type == 'paper':
+            paper = Paper(server_name, selected_version, download_path)
+            paper.download_paper()
+
+        elif server_type == 'spigot':
+            spigot = Spigot(server_name, selected_version, download_path)
+            spigot.download_spigot()
+
+        else:
+            # Handle the case where the selected version is not recognized
+            print(f"Unsupported server type: {server_type}")
 
     return render_template('create_server.html')
 
@@ -41,7 +50,7 @@ def get_server_versions(server_type):
     p = Paper()
     s = Spigot()
     if server_type == 'spigot':
-        versions = ['1.17', '1.16.4', '1.14.4']
+        versions = s.get_spigot_versions()
     elif server_type == 'paper':
         versions = p.get_paper_versions()
     else:
@@ -58,12 +67,8 @@ def get_release_groups():
 
 @app.route('/api/get_versions/<release_group>')
 def get_vanilla_versions(release_group):
-    print(release_group)
     v = Vanilla()
     versions = v.get_version_group(release_group)
-    # Logic to fetch and return versions based on the selected release group
-    # You can use the release_group parameter in your logic
-
     return {'versions': versions}
 
 

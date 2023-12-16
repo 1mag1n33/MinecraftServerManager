@@ -14,65 +14,86 @@ body {
     color: var(--light-grey);
     margin: 0;
     padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
-.container {
-    max-width: 800px;
-    margin: 0 auto;
+
+.create-container {
+    background-color: var(--black);
     padding: 20px;
-    background-color: #555;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
+.form-group {
+    margin-bottom: 15px;
+}
 
-.navbar .user-menu {
-    float: right;
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input,
+select {
+    padding: 8px;
+    border: 1px solid var(--light-grey);
+    border-radius: 5px;
+    background-color: var(--grey);
+    color: var(--light-grey);
+}
+input {
+    width: 93%;
+}
+
+select {
+    width: 100%;
+}
+
+/* Styles for the arrow icon */
+.custom-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-image: url('/static/imgs/leftarrow.png'); /* Replace with the actual path */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    transition: background-image 0.3s ease-in-out; /* Add smooth transition effect */
+}
+
+/* Adjust the arrow when the select is open */
+.custom-select:focus {
+    background-image: url('/static/imgs/downarrow.png'); /* Replace with the actual path */
+}
+
+.type-select {
+    padding-left: 30px;
+}
+
+.server-type-container {
     display: flex;
     align-items: center;
 }
 
-.navbar .user-menu span {
-    margin-right: 10px;
-    color: #fff;
+#server-type {
+    width: 70%; /* Adjust width as needed */
+    margin-right: 10px; /* Add margin between select and logo */
 }
 
-.navbar a {
-    color: #fff;
-    margin-right: 20px;
-    text-decoration: none;
+#server-logo-container {
+    flex-shrink: 0; /* Don't allow the logo to shrink */
 }
 
-.navbar a:hover {
-    color: #ffa500;
-    text-decoration: underline;
+#server-logo {
+    max-width: 50px; /* Adjust max-width as needed */
+    height: auto;
+    display: block;
 }
 
-.navbar .user-menu a{
-    color: #ffa500;
-    margin-right: 20px;
-    text-decoration: none;
-}
-
-.navbar .user-menu a:hover {
-    color: #ffd700;
-}
-
-.navbar a.login {
-    color: #ffa500;
-    text-decoration: none;
-}
-
-.navbar a.login:hover {
-    color: #ffd700;
-}
-
-.navbar a.register {
-    color: #ffa500;
-    text-decoration: none;
-}
-
-.navbar a.register:hover {
-    color: #ffd700;
-}
 
 
 button {
@@ -82,16 +103,13 @@ button {
     border-radius: 10px;
     border: none;
     cursor: pointer;
+    display: block;
+    margin: 0 auto; /* Center the button */
 }
 
 button:hover {
     background-color: #FF8C00; /* Dark Orange */
 }
 
-form {
-    margin-top: 20px;
-}
 
-footer {
-    margin-top: 50px;
-}
+

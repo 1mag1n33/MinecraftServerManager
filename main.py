@@ -1,7 +1,5 @@
 import subprocess
-import time
-
-from Cogs.utils import Paper, Vanilla
+from Cogs.Utils.server_utils import Spigot
 
 
 def run_script(script_name):
@@ -10,8 +8,10 @@ def run_script(script_name):
 
 if __name__ == "__main__":
 
+    '''
     run_script('./Cogs/Website/site.py')
 
     time.sleep(5)
 
     run_script("./Cogs/SocketServer/Server.py")
+    '''

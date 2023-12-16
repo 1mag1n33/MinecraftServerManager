@@ -5,23 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Minecraft Server Manager{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='nav.css') }}">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <a href="{{ url_for('home') }}">Home</a>
-            <a href="{{ url_for('create_server') }}">Create Server</a>
-        </div>
-    </nav>
+
 
     <div class="container">
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="{{ url_for('home') }}">Home</a>
+                <a href="{{ url_for('create_server') }}">Create Server</a>
+            </div>
+        </nav>
         {% block content %}{% endblock %}
         <footer>
             <a>&copy; 2023 NuclearTeam</a>
         </footer>
-    </div>
-
-
     </div>
 </body>
 </html>

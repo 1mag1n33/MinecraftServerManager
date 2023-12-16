@@ -3,39 +3,54 @@
 {% block title %}Create Server - Minecraft Server Manager{% endblock %}
 
 {% block content %}
-    <h2>Create Minecraft Server</h2>
-    <form method="post" action="{{ url_for('create_server') }}" id="createServerForm">
-        <label for="server-name">Server Name:</label>
-        <input id="server-name" name="server_name" required="True">
-        <br>
+    <div class="create-container">
+        <h2>Create Minecraft Server</h2>
+        <form method="post" action="{{ url_for('create_server') }}" id="createServerForm">
+            <div class="form-group">
+                <label for="server-name">Server Name:</label>
+                <input id="server-name" name="server_name" required="True">
+            </div>
 
-        <label for="server-type">Server Type:</label>
-        <select id="server-type" name="server_type" onchange="updateVersions()" required="True">
-            <!-- Options will be populated dynamically with JavaScript -->
-        </select>
-        <br>
+            <div class="form-group">
+                <label for="server-type">Server Type:</label>
+                <div class="server-type-container">
+                    <select id="server-type" name="server_type" onchange="updateLogo()" required="True">
+                        <!-- Options will be populated dynamically with JavaScript -->
+                    </select>
+                    <div id="server-logo-container">
+                        <img id="server-logo" src="" alt="Server Logo">
+                    </div>
+                </div>
+            </div>
+            <!-- Add a new container for the release group select -->
+            <div class="form-group" id="release-group-container" style="display: none;">
+                <label for="release-group">Release Group:</label>
+                <div class="custom-dropdown">
+                    <select id="release-group" name="release_group" class="custom-select" onchange="updateVanillaVersions()" required="True">
+                        <option value="release" selected>release</option>
+                    </select>
+                </div>
+            </div>
 
-        <!-- Add a new container for the release group select -->
-        <div id="release-group-container" style="display: none;">
-            <label for="release-group">Release Group:</label>
-            <select id="release-group" name="release_group" onchange="updateVanillaVersions()" required="True">
-                <option value="release" selected>release</option>
-            </select>
-            <br>
-        </div>
+            <div class="form-group">
+                <label for="server-version">Server Version:</label>
+                <div class="custom-dropdown">
+                    <select id="server-version" name="server_version" class="custom-select" required="True">
+                        <!-- Options will be populated dynamically with JavaScript -->
+                    </select>
+                </div>
+            </div>
 
-        <label for="server-version">Server Version:</label>
-        <select id="server-version" name="server_version" required="True">
-            <!-- Options will be populated dynamically with JavaScript -->
-        </select>
-        <br>
+            <div class="form-group">
+                <label for="download-path">Download Path:</label>
+                <input id="download-path" name="download_path" required="True">
+            </div>
 
-        <label for="download-path">Download Path:</label>
-        <input id="download-path" name="download_path" required="True">
-        <br>
-
-        <button type="submit">Create Server</button>
-    </form>
+            <div class="form-group">
+                <button type="submit">Create Server</button>
+            </div>
+        </form>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
