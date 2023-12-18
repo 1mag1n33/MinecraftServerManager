@@ -29,17 +29,22 @@ def custom_key(version):
     return tuple(int(part) if part.isdigit() else float('inf') for part in parts)
 
 
-def save_to_json(self, json_file: str):
+def save_server_info(data):
+    with open("server_data.json", 'w') as f:
+        json.dump(data, f, indent=4)
+
+
+def save_to_json(json_file: str, data):
     # Write server data to a JSON file
     with open(json_file, 'w') as json_file:
-        json.dump(self.server_data, json_file, indent=4)
+        json.dump(data, json_file, indent=4)
 
 
-def load_from_json(self, json_file: str):
+def load_from_json(json_file: str, data):
     # Read server data from a JSON file
     try:
         with open(json_file, 'r') as json_file:
-            self.server_data = json.load(json_file)
+            data = json.load(json_file)
     except FileNotFoundError:
         # Handle the case where the file does not exist
         pass

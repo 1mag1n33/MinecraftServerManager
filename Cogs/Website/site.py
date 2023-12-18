@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, jsonify
 from Cogs.Utils.server_utils import Paper, Vanilla, Spigot
+from Cogs.Utils.utils import save_server_info
+from Cogs.SocketServer.Server import Socket
 
 app = Flask(__name__, static_folder="./static", template_folder="./templates")
 
-
+psocket = Socket()
+servers = {"servers": []}
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -12,13 +15,26 @@ def home():
 @app.route('/create', methods=['GET', 'POST'])
 def create_server():
     if request.method == 'POST':
-
+        server_id = psocket.server_id
+        server_info = psocket.json_data
         server_name = request.form.get('server_name')
         server_type = request.form.get('server_type')
         selected_version = request.form.get('server_version')
         download_path = request.form.get('download_path')
         release_group = request.form.get('release_group')
 
+        server_json = {
+            "id": server_id,
+            "name": server_name,
+            "type": server_type,
+            "version": selected_version,
+            "release_group": release_group,
+            "server_info": [server_info]
+        }
+
+        servers["servers"].append(server_json)
+
+        save_server_info(servers)
         if server_type == 'vanilla':
             vanilla = Vanilla(server_name, selected_version, download_path)
             vanilla.download_vanilla()
